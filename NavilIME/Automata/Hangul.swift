@@ -200,13 +200,17 @@ class Hangul {
         return Hangul.hangul_keyboard[2] as? KeyboardQwerty
     }
     
-    func switchKrEn() {
-        if self.keyboard?.name == Hangul.hangul_keyboard[0].name {
+    func switchKrEn() -> Int {
+        var kbd:Int = 0
+        if self.keyboard?.id == Hangul.hangul_keyboard[0].id {
             self.keyboard = Hangul.hangul_keyboard[2]
+            kbd = Hangul.hangul_keyboard[2].id
         } else {
             self.keyboard = Hangul.hangul_keyboard[0]
+            kbd = Hangul.hangul_keyboard[0].id
         }
         self.automata = Automata(kbd: self.keyboard!)
+        return kbd
     }
     
     func Start(type:Int) {

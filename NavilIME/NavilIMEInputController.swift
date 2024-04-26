@@ -55,8 +55,17 @@ open class NavilIMEInputController: IMKInputController {
         
         if keycode == 49 && flag.contains(.shift) {
             self.hangul.Flush()
+            let switchKbd = self.hangul.switchKrEn()
+            HangulMenu.shared.change_selected_keyboard(id: switchKbd)
+            for mi in HangulMenu.shared.menu.items {
+                if mi.tag != switchKbd {
+                    mi.state = NSControl.StateValue.off
+                }
+                else {
+                    mi.state = NSControl.StateValue.on
+                }
+            }
             self.update_display(client: client)
-            self.hangul.switchKrEn()
             return true
         }
         
