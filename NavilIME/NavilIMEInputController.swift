@@ -34,6 +34,12 @@ open class NavilIMEInputController: IMKInputController {
     }
     
     override open func handle(_ event: NSEvent!, client sender: Any!) -> Bool {
+        if OptHandler.shared.Is_han_eng_changed(keycode: event.keyCode, modi: event.modifierFlags) {
+            self.hangul.ToggleSuspend()
+            self.commitComposition(sender)
+            return true
+        }
+        
         switch event.type {
         case .keyDown:
             let eaten = self.keydown_event_handler(event: event, client: sender)
@@ -44,7 +50,7 @@ open class NavilIMEInputController: IMKInputController {
         case .leftMouseDown, .leftMouseUp, .leftMouseDragged, .rightMouseDown, .rightMouseUp, .rightMouseDragged:
             self.commitComposition(sender)
         default:
-            PrintLog.shared.Log(log: "unhandled event")
+            PrintLog.shared.Log(log: "unhandled event keycode=\(event.keyCode) modi=\(event.modifierFlags.rawValue)")
         }
         return false
     }
